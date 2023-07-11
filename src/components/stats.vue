@@ -65,7 +65,7 @@
 
 	const chartOptions = {
 		chart: {
-			height: "550",
+			height: 850,
 			type: "area"
 		},
 		dataLabels: {
@@ -121,7 +121,7 @@
 	const chartOptions2 = {
 		chart: {
 			type: "bar",
-			height: 550
+			height: 850
 		},
 		title: {
 			text: "Rainfall",
@@ -189,7 +189,7 @@
 
 	const chartOptions3 = {
 		chart: {
-			height: 550,
+			height: 850,
 			type: "line"
 		},
 		forecastDataPoints: {
@@ -271,7 +271,7 @@
 
 	const chartOptions4 = {
 		chart: {
-			height: 350,
+			height: 850,
 			type: "line",
 			dropShadow: {
 				enabled: true,

@@ -2,7 +2,7 @@
 	<el-config-provider namespace="ep">
 		<BaseHeader />
 		<div class="flex w-full main-container">
-			<BaseSide />
+			<BaseSide class="hidden md:block" />
 			<div class="flex w-full p-4">
 				<Stats />
 			</div>
