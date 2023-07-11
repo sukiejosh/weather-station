@@ -43,19 +43,30 @@
 					</el-select>
 				</div>
 			</div>
-			<div class="grid md:grid-cols-3 grid-cols-1 w-full gap-5">
-				<div class="flex flex-col">
-					<apexchart :series="series4" :options="chartOptions4"></apexchart>
-				</div>
-				<div class="flex flex-col">
-					<apexchart :series="series2" :options="chartOptions2"></apexchart>
-				</div>
-				<div class="flex flex-col">
-					<apexchart :series="series3" :options="chartOptions3"></apexchart>
-				</div>
-				<div class="">
-					<apexchart :series="series" :options="chartOptions"></apexchart>
-				</div>
+			<div class="grid md:grid-cols-3 grid-cols-1 w-full h-full gap-10">
+				<apexchart
+					height="500px"
+					:series="series4"
+					:options="chartOptions4"
+				></apexchart>
+
+				<apexchart
+					height="500px"
+					:series="series2"
+					:options="chartOptions2"
+				></apexchart>
+
+				<apexchart
+					height="500px"
+					:series="series3"
+					:options="chartOptions3"
+				></apexchart>
+
+				<apexchart
+					height="500px"
+					:series="series"
+					:options="chartOptions"
+				></apexchart>
 			</div>
 		</div>
 	</div>
@@ -65,7 +76,7 @@
 
 	const chartOptions = {
 		chart: {
-			height: 850,
+			height: "auto",
 			type: "area"
 		},
 		dataLabels: {
@@ -189,7 +200,7 @@
 
 	const chartOptions3 = {
 		chart: {
-			height: 850,
+			height: "auto",
 			type: "line"
 		},
 		forecastDataPoints: {
@@ -271,7 +282,7 @@
 
 	const chartOptions4 = {
 		chart: {
-			height: 850,
+			height: "auto",
 			type: "line",
 			dropShadow: {
 				enabled: true,
