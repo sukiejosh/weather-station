@@ -1,0 +1,246 @@
+<template>
+	<div class="flex flex-col w-full space-y-20">
+		<div
+			class="flex flex-col space-y-3 space-x-0 md:space-y-0 md:flex-row w-full md:space-x-5 md:justify-betwwen"
+		>
+			<div
+				class="shadow-lg w-full h-30 rounded-lg flex justify-center items-center py-4"
+			>
+				<div class="flex flex-col space-y-5">
+					<div class="font-bold">
+						<span class="text-4xl text-green">{{ totalStations }}</span>
+					</div>
+					<div>Station(s)</div>
+				</div>
+			</div>
+			<div
+				class="shadow-lg w-full h-50 rounded-sm flex justify-center items-center py-4"
+			>
+				<div class="flex flex-col space-y-5">
+					<div class="text-4xl text-blue font-bold">10,0000</div>
+					<div>Weather data collected</div>
+				</div>
+			</div>
+		</div>
+		<div v-if="isStationDataEmpty == false" class="flex flex-col space-y-6">
+			<div class="flex flex-col space-y-2">
+				<div
+					class="flex flex-col space-y-2 space-x-0 md:flex-row md:space-x-5 md:space-y-0 w-full py-3 justify-start text-left"
+				>
+					<div class="md:flex-1 text-2xl font-bold">Temperature</div>
+					<div class="md:flex-none">
+						<div
+							class="flex flex-col space-y-3 space-x-0 md:space-y-0 md:space-x-7 md:flex-row"
+						>
+							<el-switch
+								v-model="bmpTemp"
+								class="mb-2"
+								style="
+									--el-switch-on-color: #13ce66;
+									--el-switch-off-color: #ff4949;
+								"
+								active-text="BMP Temp"
+								inactive-text="DHT Temp"
+							/>
+							<el-select
+								v-model="viewType_temeperature"
+								class="m-2"
+								placeholder="Select"
+								size="large"
+							>
+								<el-option
+									v-for="item in viewOptions"
+									:key="item.value"
+									:label="item.label"
+									:value="item.value"
+								/>
+							</el-select>
+						</div>
+					</div>
+				</div>
+				<div class="grid lg:grid-cols-2 grid-cols-1 w-full gap-10">
+					<div
+						v-for="(l, i) in latestWeatherData"
+						:key="i"
+						class="text-4xl font-bold flex items-center justify-center text-center shadow-lg rounded-xl p-10"
+					>
+						<div>
+							<p class="text-xl">{{ i }}</p>
+							<p>
+								{{ getTemp(l) }}
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="flex flex-col space-y-2">
+				<div
+					class="flex flex-col space-y-2 space-x-0 md:flex-row md:space-x-5 md:space-y-0 w-full py-3 justify-start text-left"
+				>
+					<div class="md:flex-1 font-bold text-2xl">Pressure</div>
+					<div class="md:flex-none">
+						<el-select
+							v-model="viewType_temeperature"
+							class="m-2"
+							placeholder="Select"
+							size="large"
+						>
+							<el-option
+								v-for="item in viewOptions"
+								:key="item.value"
+								:label="item.label"
+								:value="item.value"
+							/>
+						</el-select>
+					</div>
+				</div>
+				<div class="grid lg:grid-cols-2 grid-cols-1 w-full gap-10">
+					<div
+						v-for="(m, j) in latestWeatherData"
+						:key="j"
+						class="text-4xl font-bold flex items-center justify-center text-center shadow-lg rounded-xl p-10"
+					>
+						<div>
+							<p class="text-xl">{{ j }}</p>
+							<p>{{ m && m["pressure"] ? `${m["pressure"]} N/m²` : "N/A" }}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="flex flex-col space-y-2">
+				<div
+					class="flex flex-col space-y-2 space-x-0 md:flex-row md:space-x-5 md:space-y-0 w-full py-3 justify-start text-left"
+				>
+					<div class="md:flex-1 font-bold text-2xl">Humidity</div>
+					<div class="md:flex-none">
+						<el-select
+							v-model="viewType_temeperature"
+							class="m-2"
+							placeholder="Select"
+							size="large"
+						>
+							<el-option
+								v-for="item in viewOptions"
+								:key="item.value"
+								:label="item.label"
+								:value="item.value"
+							/>
+						</el-select>
+					</div>
+				</div>
+				<div class="grid lg:grid-cols-2 grid-cols-1 w-full gap-10">
+					<div
+						v-for="(n, k) in latestWeatherData"
+						:key="k"
+						class="text-4xl font-bold flex items-center justify-center text-center shadow-lg rounded-xl p-10"
+					>
+						<div>
+							<p class="text-xl">{{ k }}</p>
+							<p>
+								{{ n && n["humidity"] ? `${n["humidity"]} g.kg-1` : "N/A" }}
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div
+			v-else
+			class="text-4xl font-bold flex items-center w-full justify-center"
+		>
+			No data has been recorded
+		</div>
+	</div>
+</template>
+<script lang="ts" setup>
+	import { storeToRefs } from "pinia";
+	import { io } from "socket.io-client";
+	import { reactive, ref } from "vue";
+	import { IstationSockets, useStationStore } from "~/store/stations";
+	import { useUserStore } from "~/store/user";
+
+	const stationStore = useStationStore();
+	const userStore = useUserStore();
+	const bmpTemp = ref(true);
+
+	const viewType_temeperature = ref("Today");
+	const viewOptions = reactive([
+		{ value: "today", label: "Today" },
+		{ value: "yesterday", label: "Yesterday" },
+		{ value: "last7days", label: "Last 7 days" },
+		{ value: "last30days", label: "Last 30 days" },
+		{ value: "last90days", label: "Last 90 days" },
+		{ value: "last365days", label: "Last 365 days" },
+		{ value: "alltime", label: "All time" }
+	]);
+
+	const stationSockets = reactive([]) as IstationSockets[];
+
+	const { stations, latestWeatherData, totalStations } =
+		storeToRefs(stationStore);
+
+	const isStationDataEmpty = computed(() => {
+		return Object.keys(latestWeatherData.value).length == 0;
+	});
+
+	const getTemp = (l: any) => {
+		if (!l) return "N/A";
+		return bmpTemp.value ? `${l["bmpTemp"]} °C` : `${l["dhtTemp"]} °C`;
+	};
+
+	watchEffect(async () => {
+		console.log("mounted", totalStations.value, stations.value);
+		const baseUrl =
+			process.env.NODE_ENV == "production"
+				? "wss://weather-data-2.fly.dev"
+				: "ws://localhost:3001";
+
+		for (let i = 0; i < totalStations.value; i++) {
+			const station = stations.value.docs[i];
+			const socket = io(`${baseUrl}/live`, {
+				auth: {
+					token: userStore.token
+				},
+				query: {
+					stationId: station?.id
+				}
+			});
+
+			stationSockets.push({
+				stationId: station?.name,
+				socket
+			});
+		}
+		stationSockets.forEach((socketData) => {
+			const { socket, stationId } = socketData;
+			socket.on("connect", () => {
+				console.log("connected");
+				// ElNotification({
+				// 	message: `Connected to ${station?.name}`,
+				// 	title: "Connection status",
+				// 	type: "success"
+				// });
+			});
+			socket.on("disconnect", () => {
+				console.log("disconnected");
+				// ElNotification({
+				// 	message: `Disconnected  ${station?.name}`,
+				// 	title: "Connection status",
+				// 	type: "error"
+				// });
+			});
+			socket.on("weather_data", (msg) => {
+				console.log("message", msg);
+				latestWeatherData.value[stationId] = msg;
+			});
+			socket.on("connect_error", (err) => {
+				console.log(err);
+			});
+			//@ts-ignore
+			socket.on("error", (err) => {
+				console.log(err);
+			});
+			socket.connect();
+		});
+	});
+</script>

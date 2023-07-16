@@ -12,9 +12,9 @@
 				<span>Stations</span>
 			</template>
 			<el-menu-item-group>
-				<el-menu-item index="1-1">Location 1</el-menu-item>
-				<el-menu-item index="1-2">Location 2</el-menu-item>
-				<el-menu-item index="1-2">Location 3</el-menu-item>
+				<el-menu-item v-for="(s, i) in stations.docs" :key="i">
+					{{ s.name }}
+				</el-menu-item>
 			</el-menu-item-group>
 		</el-sub-menu>
 	</el-menu>
@@ -22,7 +22,10 @@
 
 <script lang="ts" setup>
 	import { Location } from "@element-plus/icons-vue";
+	import { storeToRefs } from "pinia";
 	import { ref } from "vue";
+	import { useStationStore } from "~/store/stations";
+	const stationStore = useStationStore();
 
 	const isCollapse = ref(true);
 	const handleOpen = (key: string, keyPath: string[]) => {
@@ -31,4 +34,6 @@
 	const handleClose = (key: string, keyPath: string[]) => {
 		console.log(key, keyPath);
 	};
+
+	const { stations } = storeToRefs(stationStore);
 </script>

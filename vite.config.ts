@@ -1,11 +1,10 @@
-import path from 'path'
-import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-
-import Components from 'unplugin-vue-components/vite'
+import path from 'path'
+import AutoImport from 'unplugin-auto-import/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import Components from 'unplugin-vue-components/vite'
+import { defineConfig } from 'vite'
 
-import Unocss from 'unocss/vite'
 import {
   presetAttributify,
   presetIcons,
@@ -13,6 +12,9 @@ import {
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
+import Unocss from 'unocss/vite'
+
+import Pages from 'vite-plugin-pages'
 
 const pathSrc = path.resolve(__dirname, 'src')
 
@@ -32,6 +34,26 @@ export default defineConfig({
   },
   plugins: [
     vue(),
+    AutoImport({
+      imports: [
+        'vue',
+        'vue-router',
+        'vue-i18n',
+        '@vueuse/head',
+        '@vueuse/core',
+      ],
+      dts: 'src/auto-imports.d.ts',
+      dirs: [
+        'src/composables',
+        'src/stores',
+      ],
+      vueTemplate: false,
+      resolvers: [
+        ElementPlusResolver({
+          directives: true,
+          importStyle: 'css',
+        }),],
+    }),
     Components({
       // allow auto load markdown components under `./src/components/`
       extensions: ['vue', 'md'],
@@ -39,6 +61,7 @@ export default defineConfig({
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
       resolvers: [
         ElementPlusResolver({
+          directives: true,
           importStyle: 'sass',
         }),
       ],
@@ -60,6 +83,9 @@ export default defineConfig({
         transformerDirectives(),
         transformerVariantGroup(),
       ]
+    }),
+    Pages({
+      extensions: ['vue', 'md'],
     }),
   ],
 })
