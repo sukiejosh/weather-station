@@ -67,7 +67,7 @@
 						<div>
 							<p class="text-xl">{{ i }}</p>
 							<p>
-								{{ getTemp(l) }}
+								{{ l && l["temp"] ? `${l["temp"]} °C` : "N/A" }}
 							</p>
 						</div>
 					</div>
@@ -182,11 +182,6 @@
 	const isStationDataEmpty = computed(() => {
 		return Object.keys(latestWeatherData.value).length == 0;
 	});
-
-	const getTemp = (l: any) => {
-		if (!l) return "N/A";
-		return bmpTemp.value ? `${l["bmpTemp"]} °C` : `${l["dhtTemp"]} °C`;
-	};
 
 	watchEffect(async () => {
 		console.log("mounted", totalStations.value, stations.value);
