@@ -13,14 +13,14 @@
 					<div>Station(s)</div>
 				</div>
 			</div>
-			<div
+			<!-- <div
 				class="shadow-lg w-full h-50 rounded-sm flex justify-center items-center py-4"
 			>
 				<div class="flex flex-col space-y-5">
 					<div class="text-4xl text-blue font-bold">10,0000</div>
 					<div>Weather data collected</div>
 				</div>
-			</div>
+			</div> -->
 		</div>
 		<div v-if="isStationDataEmpty == false" class="flex flex-col space-y-6">
 			<div class="flex flex-col space-y-2">
@@ -58,7 +58,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="grid lg:grid-cols-2 grid-cols-1 w-full gap-10">
+				<div
+					class="grid lg:grid-cols-2 grid-flow-dense grid-cols-1 w-full gap-10"
+				>
 					<div
 						v-for="(l, i) in latestWeatherData"
 						:key="i"
@@ -102,7 +104,7 @@
 					>
 						<div>
 							<p class="text-xl">{{ j }}</p>
-							<p>{{ m && m["pressure"] ? `${m["pressure"]} N/m²` : "N/A" }}</p>
+							<p>{{ m && m["pressure"] ? `${m["pressure"]} Pa` : "N/A" }}</p>
 						</div>
 					</div>
 				</div>

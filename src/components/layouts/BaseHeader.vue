@@ -5,7 +5,7 @@
 <template>
 	<el-menu class="el-menu-demo" mode="horizontal">
 		<el-menu-item index="1">Weather Station</el-menu-item>
-		<el-menu-item h="full" @click="toggleDark()">
+		<el-menu-item h="full" @click.native="toggleDark()">
 			<button
 				class="border-none w-full bg-transparent cursor-pointer"
 				style="height: var(--ep-menu-item-height)"
