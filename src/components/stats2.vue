@@ -58,7 +58,14 @@
 						</div>
 					</div>
 				</div>
-				<div class="grid-container w-full gap-10">
+				<div
+					:class="[
+						totalStations > 1
+							? 'grid lg:grid-cols-4 grid-cols-1'
+							: 'grid-container'
+					]"
+					class="w-full gap-10"
+				>
 					<div
 						v-for="(l, i) in latestWeatherData"
 						:key="i"
@@ -97,7 +104,14 @@
 						</el-select> -->
 					</div>
 				</div>
-				<div class="grid-container w-full gap-10">
+				<div
+					:class="[
+						totalStations > 1
+							? 'grid lg:grid-cols-4 grid-cols-1'
+							: 'grid-container'
+					]"
+					class="w-full gap-10"
+				>
 					<div
 						v-for="(m, j) in latestWeatherData"
 						:key="j"
@@ -105,7 +119,16 @@
 					>
 						<div>
 							<p class="text-xl">{{ j }}</p>
-							<p>{{ m && m["pressure"] ? `${m["pressure"]} Pa` : "N/A" }}</p>
+							<p>
+								{{
+									m && m["pressure"]
+										? `${formatNumberWithCommas(m["pressure"])} Pa`
+										: "N/A"
+								}}
+							</p>
+							<p v-if="m && m?.createdAt" class="text-xs text-blue">
+								Last updated - {{ new Date(m?.createdAt)?.toLocaleString() }}
+							</p>
 						</div>
 					</div>
 				</div>
@@ -131,7 +154,14 @@
 						</el-select> -->
 					</div>
 				</div>
-				<div class="grid-container w-full gap-10">
+				<div
+					:class="[
+						totalStations > 1
+							? 'grid lg:grid-cols-4 grid-cols-1'
+							: 'grid-container'
+					]"
+					class="w-full gap-10"
+				>
 					<div
 						v-for="(n, k) in latestWeatherData"
 						:key="k"
@@ -141,10 +171,11 @@
 							<p class="text-xl">{{ k }}</p>
 							<p>
 								{{
-									n && n["humidity"]
-										? `${n["humidity"]?.toFixed(2)} kg/m³`
-										: "N/A"
+									n && n["humidity"] ? `${n["humidity"]?.toFixed(2)} %` : "N/A"
 								}}
+							</p>
+							<p v-if="n && n?.createdAt" class="text-xs text-blue">
+								Last updated - {{ new Date(n?.createdAt)?.toLocaleString() }}
 							</p>
 						</div>
 					</div>
@@ -180,6 +211,27 @@
 		{ value: "last365days", label: "Last 365 days" },
 		{ value: "alltime", label: "All time" }
 	]);
+
+	function formatNumberWithCommas(number: { toString: () => any }) {
+		// Convert the number to a string
+		let numberStr = number.toString();
+
+		// Split the number into integer and decimal parts
+		const parts = numberStr.split(".");
+		let integerPart = parts[0];
+		const decimalPart = parts[1] || "";
+
+		// Add commas to the integer part
+		const integerRegex = /\B(?=(\d{3})+(?!\d))/g;
+		integerPart = integerPart.replace(integerRegex, ",");
+
+		// Combine the integer and decimal parts
+		const formattedNumber = decimalPart
+			? `${integerPart}.${decimalPart}`
+			: integerPart;
+
+		return formattedNumber;
+	}
 
 	const stationSockets = reactive([]) as IstationSockets[];
 

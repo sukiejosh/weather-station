@@ -56,7 +56,6 @@ export const useStationStore = defineStore('stations', {
                         Authorization: `Bearer ${token}`
                     }
                 })
-                console.log('ssds', data)
                 this.stations = data
                 if (this.stations.docs.length > 0) {
                     for (let i = 0; i < this.stations.docs.length; i++) {
@@ -87,7 +86,6 @@ export const useStationStore = defineStore('stations', {
                         sort
                     }
                 }) as any
-                console.log('ssds', data)
                 if (!this.latestWeatherData[stationDetails.name]) {
                     this.latestWeatherData[stationDetails.name] = {}
                 }
