@@ -32,7 +32,7 @@
 						<div
 							class="flex flex-col space-y-3 space-x-0 md:space-y-0 md:space-x-7 md:flex-row"
 						>
-							<el-switch
+							<!-- <el-switch
 								v-model="bmpTemp"
 								class="mb-2"
 								style="
@@ -41,8 +41,8 @@
 								"
 								active-text="BMP Temp"
 								inactive-text="DHT Temp"
-							/>
-							<el-select
+							/> -->
+							<!-- <el-select
 								v-model="viewType_temeperature"
 								class="m-2"
 								placeholder="Select"
@@ -54,7 +54,7 @@
 									:label="item.label"
 									:value="item.value"
 								/>
-							</el-select>
+							</el-select> -->
 						</div>
 					</div>
 				</div>
@@ -69,7 +69,7 @@
 						<div>
 							<p class="text-xl">{{ i }}</p>
 							<p>
-								{{ l && l["temp"] ? `${l["temp"]} °C` : "N/A" }}
+								{{ l && l["temp"] ? `${l["temp"]?.toFixed(2)} °C` : "N/A" }}
 							</p>
 						</div>
 					</div>
@@ -81,7 +81,7 @@
 				>
 					<div class="md:flex-1 font-bold text-2xl">Pressure</div>
 					<div class="md:flex-none">
-						<el-select
+						<!-- <el-select
 							v-model="viewType_temeperature"
 							class="m-2"
 							placeholder="Select"
@@ -93,7 +93,7 @@
 								:label="item.label"
 								:value="item.value"
 							/>
-						</el-select>
+						</el-select> -->
 					</div>
 				</div>
 				<div class="grid lg:grid-cols-2 grid-cols-1 w-full gap-10">
@@ -115,7 +115,7 @@
 				>
 					<div class="md:flex-1 font-bold text-2xl">Humidity</div>
 					<div class="md:flex-none">
-						<el-select
+						<!-- <el-select
 							v-model="viewType_temeperature"
 							class="m-2"
 							placeholder="Select"
@@ -127,7 +127,7 @@
 								:label="item.label"
 								:value="item.value"
 							/>
-						</el-select>
+						</el-select> -->
 					</div>
 				</div>
 				<div class="grid lg:grid-cols-2 grid-cols-1 w-full gap-10">
@@ -139,7 +139,11 @@
 						<div>
 							<p class="text-xl">{{ k }}</p>
 							<p>
-								{{ n && n["humidity"] ? `${n["humidity"]} g.kg-1` : "N/A" }}
+								{{
+									n && n["humidity"]
+										? `${n["humidity"]?.toFixed(2)} kg/m³`
+										: "N/A"
+								}}
 							</p>
 						</div>
 					</div>

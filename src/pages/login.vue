@@ -57,4 +57,8 @@
 				});
 			});
 	};
+
+	onMounted(() => {
+		localStorage.removeItem("weather_app_user");
+	});
 </script>
