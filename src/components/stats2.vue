@@ -58,9 +58,7 @@
 						</div>
 					</div>
 				</div>
-				<div
-					class="grid lg:grid-cols-2 grid-flow-dense grid-cols-1 w-full gap-10"
-				>
+				<div class="grid-container w-full gap-10">
 					<div
 						v-for="(l, i) in latestWeatherData"
 						:key="i"
@@ -70,6 +68,9 @@
 							<p class="text-xl">{{ i }}</p>
 							<p>
 								{{ l && l["temp"] ? `${l["temp"]?.toFixed(2)} °C` : "N/A" }}
+							</p>
+							<p v-if="l && l?.createdAt" class="text-xs text-blue">
+								Last updated - {{ new Date(l?.createdAt)?.toLocaleString() }}
 							</p>
 						</div>
 					</div>
@@ -96,7 +97,7 @@
 						</el-select> -->
 					</div>
 				</div>
-				<div class="grid lg:grid-cols-2 grid-cols-1 w-full gap-10">
+				<div class="grid-container w-full gap-10">
 					<div
 						v-for="(m, j) in latestWeatherData"
 						:key="j"
@@ -130,7 +131,7 @@
 						</el-select> -->
 					</div>
 				</div>
-				<div class="grid lg:grid-cols-2 grid-cols-1 w-full gap-10">
+				<div class="grid-container w-full gap-10">
 					<div
 						v-for="(n, k) in latestWeatherData"
 						:key="k"
@@ -245,3 +246,9 @@
 		});
 	});
 </script>
+<style scoped>
+	.grid-container {
+		display: grid;
+		grid-template-rows: repeat(n, minmax(auto, 1fr));
+	}
+</style>
