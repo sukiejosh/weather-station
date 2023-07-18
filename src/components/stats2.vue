@@ -191,6 +191,7 @@
 	</div>
 </template>
 <script lang="ts" setup>
+	import { ElNotification } from "element-plus";
 	import { storeToRefs } from "pinia";
 	import { io } from "socket.io-client";
 	import { reactive, ref } from "vue";
@@ -284,8 +285,13 @@
 				// });
 			});
 			socket.on("weather_data", (msg) => {
-				console.log("message", msg);
+				// console.log("message", msg);
 				latestWeatherData.value[stationId] = msg;
+				ElNotification({
+					message: `Updated`,
+					title: "Weather Report",
+					type: "success"
+				});
 			});
 			socket.on("connect_error", (err) => {
 				console.log(err);
