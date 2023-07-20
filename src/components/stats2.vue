@@ -11,6 +11,7 @@
 						<span class="text-4xl text-green">{{ totalStations }}</span>
 					</div>
 					<div>Station(s)</div>
+					<p>8.4845796, 4.6747214</p>
 				</div>
 			</div>
 			<!-- <div
@@ -122,7 +123,9 @@
 							<p>
 								{{
 									m && m["pressure"]
-										? `${formatNumberWithCommas(m["pressure"])} Pa`
+										? `${formatNumberWithCommas(
+												convertToKpa(m["pressure"])
+										  )} KPa`
 										: "N/A"
 								}}
 							</p>
@@ -232,6 +235,10 @@
 			: integerPart;
 
 		return formattedNumber;
+	}
+
+	function convertToKpa(pressure: number) {
+		return pressure / 1000;
 	}
 
 	const stationSockets = reactive([]) as IstationSockets[];
