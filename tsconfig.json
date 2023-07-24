@@ -25,7 +25,8 @@
       "vite-plugin-pwa/client",
       "unplugin-vue-macros/macros-global",
       "element-plus/global",
-      "node"
+      "node",
+      "vite-plugin-vue-layouts/client"
     ],
     "paths": {
       "~/*": [

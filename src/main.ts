@@ -6,14 +6,20 @@ import "uno.css";
 import { createApp } from "vue";
 import { createRouter, createWebHistory } from 'vue-router';
 import VueApexCharts from "vue3-apexcharts";
-import routes from '~pages';
+// import routes from '~pages';
 
 // import "~/styles/index.scss";
 import ElementPlus from 'element-plus';
 
 import 'element-plus/dist/index.css';
+import { setupLayouts } from 'virtual:generated-layouts';
+import generatedRoutes from 'virtual:generated-pages';
+import Vue3EasyDataTable from 'vue3-easy-data-table';
+import 'vue3-easy-data-table/dist/style.css';
 import App from "./App.vue";
 import { useUserStore } from './store/user';
+
+const routes = setupLayouts(generatedRoutes)
 
 
 const router = createRouter({
@@ -31,6 +37,8 @@ pinia.use(createPersistedState({
 const app = createApp(App);
 app.use(ElementPlus);
 app.use(VueApexCharts);
+app.component('EasyDataTable', Vue3EasyDataTable);
+
 
 
 router.beforeEach(async (to, from) => {

@@ -40,6 +40,7 @@
 
 	const login = async () => {
 		if (!email.value || !password.value) return;
+		localStorage.removeItem("weather_app_user");
 		await userStore
 			.login({
 				email: email.value,
@@ -62,3 +63,10 @@
 		localStorage.removeItem("weather_app_user");
 	});
 </script>
+<route lang="json">
+{
+	"meta": {
+		"layout": "login"
+	}
+}
+</route>

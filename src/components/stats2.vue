@@ -33,29 +33,6 @@
 						<div
 							class="flex flex-col space-y-3 space-x-0 md:space-y-0 md:space-x-7 md:flex-row"
 						>
-							<!-- <el-switch
-								v-model="bmpTemp"
-								class="mb-2"
-								style="
-									--el-switch-on-color: #13ce66;
-									--el-switch-off-color: #ff4949;
-								"
-								active-text="BMP Temp"
-								inactive-text="DHT Temp"
-							/> -->
-							<!-- <el-select
-								v-model="viewType_temeperature"
-								class="m-2"
-								placeholder="Select"
-								size="large"
-							>
-								<el-option
-									v-for="item in viewOptions"
-									:key="item.value"
-									:label="item.label"
-									:value="item.value"
-								/>
-							</el-select> -->
 						</div>
 					</div>
 				</div>
@@ -248,67 +225,6 @@
 
 	const isStationDataEmpty = computed(() => {
 		return Object.keys(latestWeatherData.value).length == 0;
-	});
-
-	watchEffect(async () => {
-		console.log("mounted", totalStations.value, stations.value);
-		const baseUrl =
-			process.env.NODE_ENV == "production"
-				? "wss://weather-data-2.fly.dev"
-				: "ws://localhost:3001";
-
-		for (let i = 0; i < totalStations.value; i++) {
-			const station = stations.value.docs[i];
-			const socket = io(`${baseUrl}/live`, {
-				auth: {
-					token: userStore.token
-				},
-				query: {
-					stationId: station?.id
-				}
-			});
-
-			stationSockets.push({
-				stationId: station?.name,
-				socket
-			});
-		}
-		stationSockets.forEach((socketData) => {
-			const { socket, stationId } = socketData;
-			socket.on("connect", () => {
-				console.log("connected");
-				// ElNotification({
-				// 	message: `Connected to ${station?.name}`,
-				// 	title: "Connection status",
-				// 	type: "success"
-				// });
-			});
-			socket.on("disconnect", () => {
-				console.log("disconnected");
-				// ElNotification({
-				// 	message: `Disconnected  ${station?.name}`,
-				// 	title: "Connection status",
-				// 	type: "error"
-				// });
-			});
-			socket.on("weather_data", (msg) => {
-				// console.log("message", msg);
-				latestWeatherData.value[stationId] = msg;
-				ElNotification({
-					message: `Updated`,
-					title: "Weather Report",
-					type: "success"
-				});
-			});
-			socket.on("connect_error", (err) => {
-				console.log(err);
-			});
-			//@ts-ignore
-			socket.on("error", (err) => {
-				console.log(err);
-			});
-			socket.connect();
-		});
 	});
 </script>
 <style scoped>

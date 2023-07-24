@@ -1,5 +1,14 @@
 <template>
-	<Stats2 />
+	<el-config-provider namespace="ep">
+		<BaseHeader />
+		<div class="flex w-full main-container">
+			<BaseSide class="hidden md:block" />
+			<div class="flex w-full p-4">
+				<!-- <Stats2 /> -->
+				<router-view />
+			</div>
+		</div>
+	</el-config-provider>
 </template>
 
 <style>
@@ -15,6 +24,7 @@
 
 <script lang="ts" setup>
 	import { onMounted } from "vue";
+	import { useRouter } from "vue-router";
 	import { useStationStore } from "~/store/stations";
 	import { useUserStore } from "~/store/user";
 	// import { useStationStore } from "./store/stations";

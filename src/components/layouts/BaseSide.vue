@@ -1,7 +1,7 @@
 <template>
 	<el-menu
 		default-active="2"
-		class="el-menu-vertical-demo"
+		class="el-menu-vertical-demo w-100"
 		:collapse="false"
 		@open="handleOpen"
 		@close="handleClose"
@@ -13,7 +13,9 @@
 			</template>
 			<el-menu-item-group>
 				<el-menu-item v-for="(s, i) in stations.docs" :key="i">
-					{{ s.name }}
+					<router-link :to="s.id">
+						{{ s.name }}
+					</router-link>
 				</el-menu-item>
 			</el-menu-item-group>
 		</el-sub-menu>
