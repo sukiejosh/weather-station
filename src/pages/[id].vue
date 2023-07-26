@@ -194,9 +194,9 @@
 		sort: "desc"
 	});
 	const headers: Header[] = [
-		{ text: "Temperature", value: "temp" },
-		{ text: "Pressure", value: "pressure" },
-		{ text: "Humidity", value: "humidity" },
+		{ text: "Temperature (°C)", value: "temp" },
+		{ text: "Pressure (KPa)", value: "pressure" },
+		{ text: "Humidity (%)", value: "humidity" },
 		{ text: "Created", value: "createdAt" }
 	];
 	const items = ref<Item[]>([]);
