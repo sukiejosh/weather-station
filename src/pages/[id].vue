@@ -130,10 +130,31 @@
 				</div>
 			</div>
 			<div class="flex flex-col space-y-2 w-full">
-				<div v-if="items.length > 0" class="flex w-full justify-end">
-					<el-button type="primary" @click="downloadData" plain>
-						Download as CSV
-					</el-button>
+				<div
+					v-if="items.length > 0"
+					class="flex items-center w-full justify-end"
+				>
+					<div class="flex items-center space-x-3">
+						<div>Download as</div>
+						<div>
+							<el-select
+								v-model="downloadAs"
+								class="m-2"
+								placeholder="Select"
+								size="large"
+							>
+								<el-option
+									v-for="item in downloadOptions"
+									:key="item"
+									:label="item"
+									:value="item"
+								/>
+							</el-select>
+						</div>
+						<el-button :disabled="!downloadAs" @click="downloadData" plain>
+							Download
+						</el-button>
+					</div>
 				</div>
 				<div>
 					<EasyDataTable
@@ -141,6 +162,7 @@
 						:items="items"
 						alternating
 						buttons-pagination
+						id="my-table"
 					/>
 				</div>
 			</div>
@@ -157,6 +179,8 @@
 <script lang="ts" setup>
 	// import { id } from "element-plus/es/locale";
 	import csvDownload from "json-to-csv-export";
+	import jsPDF from "jspdf";
+	import autoTable from "jspdf-autotable";
 
 	import { storeToRefs } from "pinia";
 	import { onMounted } from "vue";
@@ -168,13 +192,11 @@
 	// import { useStationStore } from "./store/stations";
 
 	const downloadData = () => {
-		const dataToConvert = {
-			data: items.value,
-			filename: ` ${stationDetails?.name} - ${new Date().toLocaleDateString()}`,
-			delimiter: ",",
-			headers: ["Temperature", "Pressure", "Humidity", "Created"]
-		};
-		csvDownload(dataToConvert);
+		if (downloadAs.value == "CSV") {
+			downloadAsCSV();
+		} else if (downloadAs.value == "PDF") {
+			downloadAsPDF();
+		}
 	};
 
 	const userStore = useUserStore();
@@ -187,12 +209,6 @@
 	const stationDetails = stations.value.docs.find(
 		(station: any) => station.id == id
 	);
-	const serverOptions = ref({
-		page: 1,
-		rowsPerPage: 10,
-		limit: 10,
-		sort: "desc"
-	});
 	const headers: Header[] = [
 		{ text: "Temperature (°C)", value: "temp" },
 		{ text: "Pressure (KPa)", value: "pressure" },
@@ -200,7 +216,35 @@
 		{ text: "Created", value: "createdAt" }
 	];
 	const items = ref<Item[]>([]);
+	const downloadOptions = ["CSV", "PDF"];
+	const downloadAs = ref("CSV");
 	const serverItemsLength = ref(0);
+	const filename = `${stationDetails?.name} - ${new Date().toLocaleString()}`;
+
+	const downloadAsCSV = () => {
+		const dataToConvert = {
+			data: items.value,
+			filename: filename,
+			delimiter: ",",
+			headers: ["Temperature", "Pressure", "Humidity", "Created"]
+		};
+		csvDownload(dataToConvert);
+	};
+	const downloadAsPDF = () => {
+		const doc = new jsPDF();
+		autoTable(doc, {
+			head: [[...headers.map((h) => h.text)]],
+			body: [
+				...items.value.map((item) => [
+					item.temp,
+					item.pressure,
+					item.humidity,
+					item.createdAt
+				])
+			]
+		});
+		doc.save(`${filename}.pdf`);
+	};
 	onMounted(async () => {
 		// userStore.init();
 		loading.value = true;
@@ -218,10 +262,10 @@
 		if (d) {
 			items.value = d.map((doc: any) => {
 				return {
-					temp: doc.temp,
-					pressure: doc.pressure,
-					humidity: doc.humidity,
-					createdAt: new Date(doc.createdAt).toLocaleString()
+					temp: doc.temp ?? "N/A",
+					pressure: doc.pressure ?? "N/A",
+					humidity: doc.humidity ?? "N/A",
+					createdAt: new Date(doc.createdAt).toLocaleString() ?? "N/A"
 				};
 			});
 			serverItemsLength.value = d.totalDocs;
