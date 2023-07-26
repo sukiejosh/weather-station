@@ -221,7 +221,7 @@
 					temp: doc.temp,
 					pressure: doc.pressure,
 					humidity: doc.humidity,
-					createdAt: new Date(doc.createdAt).toLocaleDateString()
+					createdAt: new Date(doc.createdAt).toLocaleString()
 				};
 			});
 			serverItemsLength.value = d.totalDocs;
