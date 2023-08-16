@@ -213,6 +213,8 @@
 		{ text: "Temperature (°C)", value: "temp" },
 		{ text: "Pressure (KPa)", value: "pressure" },
 		{ text: "Humidity (%)", value: "humidity" },
+		{ text: "Windspeed (m/s)", value: "windspeed" },
+		{ text: "Rainfall (mm)", value: "rainfall" },
 		{ text: "Created", value: "createdAt" }
 	];
 	const items = ref<Item[]>([]);
@@ -239,6 +241,8 @@
 					item.temp,
 					item.pressure,
 					item.humidity,
+					item.windspeed,
+					item.rainfall,
 					item.createdAt
 				])
 			]

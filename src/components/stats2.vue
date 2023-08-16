@@ -161,6 +161,102 @@
 					</div>
 				</div>
 			</div>
+			<div class="flex flex-col space-y-2">
+				<div
+					class="flex flex-col space-y-2 space-x-0 md:flex-row md:space-x-5 md:space-y-0 w-full py-3 justify-start text-left"
+				>
+					<div class="md:flex-1 font-bold text-2xl">Windspeed</div>
+					<div class="md:flex-none">
+						<!-- <el-select
+							v-model="viewType_temeperature"
+							class="m-2"
+							placeholder="Select"
+							size="large"
+						>
+							<el-option
+								v-for="item in viewOptions"
+								:key="item.value"
+								:label="item.label"
+								:value="item.value"
+							/>
+						</el-select> -->
+					</div>
+				</div>
+				<div
+					:class="[
+						totalStations > 1
+							? 'grid lg:grid-cols-4 grid-cols-1'
+							: 'grid-container'
+					]"
+					class="w-full gap-10"
+				>
+					<div
+						v-for="(o, l) in latestWeatherData"
+						:key="l"
+						class="text-4xl font-bold flex items-center justify-center text-center shadow-lg rounded-xl p-10"
+					>
+						<div>
+							<p class="text-xl">{{ l }}</p>
+							<p>
+								{{
+									o && o["windspeed"] ? `${o["windspeed"]?.toFixed(2)} m/s` : "N/A"
+								}}
+							</p>
+							<p v-if="o && o?.createdAt" class="text-xs text-blue">
+								Last updated - {{ new Date(o?.createdAt)?.toLocaleString() }}
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="flex flex-col space-y-2">
+				<div
+					class="flex flex-col space-y-2 space-x-0 md:flex-row md:space-x-5 md:space-y-0 w-full py-3 justify-start text-left"
+				>
+					<div class="md:flex-1 font-bold text-2xl">Rainfall</div>
+					<div class="md:flex-none">
+						<!-- <el-select
+							v-model="viewType_temeperature"
+							class="m-2"
+							placeholder="Select"
+							size="large"
+						>
+							<el-option
+								v-for="item in viewOptions"
+								:key="item.value"
+								:label="item.label"
+								:value="item.value"
+							/>
+						</el-select> -->
+					</div>
+				</div>
+				<div
+					:class="[
+						totalStations > 1
+							? 'grid lg:grid-cols-4 grid-cols-1'
+							: 'grid-container'
+					]"
+					class="w-full gap-10"
+				>
+					<div
+						v-for="(p, ll) in latestWeatherData"
+						:key="ll"
+						class="text-4xl font-bold flex items-center justify-center text-center shadow-lg rounded-xl p-10"
+					>
+						<div>
+							<p class="text-xl">{{ ll }}</p>
+							<p>
+								{{
+									p && p["rainfall"] ? `${p["rainfall"]?.toFixed(2)} mm` : "N/A"
+								}}
+							</p>
+							<p v-if="p && p?.createdAt" class="text-xs text-blue">
+								Last updated - {{ new Date(p?.createdAt)?.toLocaleString() }}
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div
 			v-else
