@@ -100,11 +100,11 @@ export const useStationStore = defineStore('stations', {
                             socket.on("weather_data", (msg) => {
                                 // console.log("message", msg);
                                 this.latestWeatherData[stationId] = msg;
-                                ElNotification({
-                                    message: `Updated`,
-                                    title: "Weather Report",
-                                    type: "success"
-                                });
+                                // ElNotification({
+                                //     message: `Updated`,
+                                //     title: "Weather Report",
+                                //     type: "success"
+                                // });
                             });
                             socket.on("connect_error", (err) => {
                                 console.log(err);
