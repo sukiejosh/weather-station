@@ -12,6 +12,13 @@
 					</div>
 					<div>Station(s)</div>
 					<p>8.4845796, 4.6747214</p>
+					<div class="flex w-full space-x-3 p-3 md:hidden">
+						<div v-for="(s, i) in stations.docs" :key="i">
+							<router-link :to="s.id">
+								{{ s.name }}
+							</router-link>
+						</div>
+					</div>
 				</div>
 			</div>
 			<!-- <div
@@ -32,8 +39,7 @@
 					<div class="md:flex-none">
 						<div
 							class="flex flex-col space-y-3 space-x-0 md:space-y-0 md:space-x-7 md:flex-row"
-						>
-						</div>
+						></div>
 					</div>
 				</div>
 				<div
@@ -199,7 +205,9 @@
 							<p class="text-xl">{{ l }}</p>
 							<p>
 								{{
-									o && o["windspeed"] ? `${o["windspeed"]?.toFixed(2)} m/s` : "N/A"
+									o && o["windspeed"]
+										? `${o["windspeed"]?.toFixed(2)} m/s`
+										: "N/A"
 								}}
 							</p>
 							<p v-if="o && o?.createdAt" class="text-xs text-blue">
