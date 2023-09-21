@@ -13,7 +13,7 @@
 					<div>Station(s)</div>
 					<p>8.4845796, 4.6747214</p>
 					<div class="flex w-full space-x-3 p-3 md:hidden">
-						<div v-for="(s, i) in stations.docs" :key="i">
+						<div class="py-2" v-for="(s, i) in stations.docs" :key="i">
 							<router-link :to="s.id">
 								{{ s.name }}
 							</router-link>
@@ -58,7 +58,7 @@
 						<div>
 							<p class="text-xl">{{ i }}</p>
 							<p>
-								{{ l && l["temp"] ? `${l["temp"]?.toFixed(2)} °C` : "N/A" }}
+								{{ l && l["temp"] ? `${l["temp"]?.toFixed(2)} °C` : 0 }}
 							</p>
 							<p v-if="l && l?.createdAt" class="text-xs text-blue">
 								Last updated - {{ new Date(l?.createdAt)?.toLocaleString() }}
@@ -109,7 +109,7 @@
 										? `${formatNumberWithCommas(
 												convertToKpa(m["pressure"])
 										  )} KPa`
-										: "N/A"
+										: 0
 								}}
 							</p>
 							<p v-if="m && m?.createdAt" class="text-xs text-blue">
@@ -156,9 +156,7 @@
 						<div>
 							<p class="text-xl">{{ k }}</p>
 							<p>
-								{{
-									n && n["humidity"] ? `${n["humidity"]?.toFixed(2)} %` : "N/A"
-								}}
+								{{ n && n["humidity"] ? `${n["humidity"]?.toFixed(2)} %` : 0 }}
 							</p>
 							<p v-if="n && n?.createdAt" class="text-xs text-blue">
 								Last updated - {{ new Date(n?.createdAt)?.toLocaleString() }}
@@ -205,9 +203,7 @@
 							<p class="text-xl">{{ l }}</p>
 							<p>
 								{{
-									o && o["windspeed"]
-										? `${o["windspeed"]?.toFixed(2)} m/s`
-										: "N/A"
+									o && o["windspeed"] ? `${o["windspeed"]?.toFixed(2)} m/s` : 0
 								}}
 							</p>
 							<p v-if="o && o?.createdAt" class="text-xs text-blue">
@@ -254,9 +250,7 @@
 						<div>
 							<p class="text-xl">{{ ll }}</p>
 							<p>
-								{{
-									p && p["rainfall"] ? `${p["rainfall"]?.toFixed(2)} mm` : "N/A"
-								}}
+								{{ p && p["rainfall"] ? `${p["rainfall"]?.toFixed(2)} mm` : 0 }}
 							</p>
 							<p v-if="p && p?.createdAt" class="text-xs text-blue">
 								Last updated - {{ new Date(p?.createdAt)?.toLocaleString() }}

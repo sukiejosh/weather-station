@@ -24,7 +24,7 @@
 									{{
 										stationData && stationData["temp"]
 											? `${stationData["temp"]?.toFixed(2)} °C`
-											: "N/A"
+											: 0
 									}}
 								</p>
 								<p
@@ -70,7 +70,7 @@
 											? `${formatNumberWithCommas(
 													convertToKpa(stationData["pressure"])
 											  )} KPa`
-											: "N/A"
+											: 0
 									}}
 								</p>
 								<p
@@ -114,7 +114,7 @@
 									{{
 										stationData && stationData["humidity"]
 											? `${stationData["humidity"]?.toFixed(2)} %`
-											: "N/A"
+											: 0
 									}}
 								</p>
 								<p
@@ -228,7 +228,14 @@
 			data: items.value,
 			filename: filename,
 			delimiter: ",",
-			headers: ["Temperature", "Pressure", "Humidity", "Created"]
+			headers: [
+				"Temperature",
+				"Pressure",
+				"Humidity",
+				"Windspeed",
+				"Rainfall",
+				"Created"
+			]
 		};
 		csvDownload(dataToConvert);
 	};
@@ -266,10 +273,12 @@
 		if (d) {
 			items.value = d.map((doc: any) => {
 				return {
-					temp: doc.temp ?? "N/A",
-					pressure: doc.pressure ?? "N/A",
-					humidity: doc.humidity ?? "N/A",
-					createdAt: new Date(doc.createdAt).toLocaleString() ?? "N/A"
+					temp: doc?.temp ?? 0,
+					pressure: doc?.pressure ?? 0,
+					humidity: doc?.humidity ?? 0,
+					windspeed: doc?.windspeed ?? 0,
+					rainfall: doc?.rainfall ?? 0,
+					createdAt: new Date(doc.createdAt).toLocaleString() ?? 0
 				};
 			});
 			serverItemsLength.value = d.totalDocs;
